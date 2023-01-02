@@ -1,13 +1,18 @@
 'use strict';
-
-///////////////////////////////////////
-// Modal window
-
+const header = document.querySelector('.header')
+const message = document.createElement('div');
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const sec1 = document.querySelector('#section--1');
+///////////////////////////////////////
+// Modal window
 
+
+const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+const randomColor = () => `rgba(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`
 const openModal = function (e) {
   e.preventDefault();
   btnCloseModal.classList.add('is-active');
@@ -35,8 +40,7 @@ document.addEventListener('keydown', function (e) {
   }
 });
 //////////////////////
-const header = document.querySelector('.header')
-const message = document.createElement('div');
+
 message.classList.add('cookie-message');
 message.innerHTML = 'We use cookies to improve performance <button class="btn btn---close--cookie">Got It!</button>'
 // header.prepend(message.cloneNode(true));
@@ -49,7 +53,7 @@ document.querySelector('.btn---close--cookie').addEventListener('click', functio
 //STYLE
 message.style.backgroundColor = '#37383d';
 message.style.width = '120%';
-console.log(getComputedStyle(message).height);
+// console.log(getComputedStyle(message).height);
 message.style.height = Number.parseFloat(getComputedStyle(message).height, 10) + 40 + 'px'
 
 // message.style.height = '80px'
@@ -63,8 +67,7 @@ message.style.height = Number.parseFloat(getComputedStyle(message).height, 10) +
 // const link = document.querySelector('.nav__link');
 // console.log(link.href);
 // console.log(link.getAttribute('href'));
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const sec1 = document.querySelector('#section--1');
+
 //Scrolling
 btnScrollTo.addEventListener('click', function () {
   //OLD WAY
@@ -81,3 +84,39 @@ btnScrollTo.addEventListener('click', function () {
   //MODERN WAY
   sec1.scrollIntoView({ behavior: 'smooth' })
 })
+/////////
+// const h1 = document.querySelector('h1');
+// const alert1 = function () {
+//   alert('Hello');
+//   h1.removeEventListener('mouseenter', alert1);
+// };
+//////////////////////
+// h1.addEventListener('mouseenter', alert1)
+
+///BUBBLING CAPTURING PROPAGATION
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   // e.stopPropagation();
+// })
+
+// document.querySelector('.nav__links').addEventListener('click', function () {
+//   this.style.backgroundColor = randomColor();
+// })
+// document.querySelector('.nav').addEventListener('click', function () {
+//   this.style.backgroundColor = randomColor();
+// })
+//DELEGATION
+//Determiine what element oriented the event
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  //Match the strategy
+
+  if (e.target.classList.contains('nav__link')) {
+
+    console.log(e.target);
+    const id = e.target.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' })
+  }
+})
+
